@@ -1,15 +1,9 @@
 import React, {Component} from "react";
-import {
-   StyleSheet,
-   TouchableOpacity,
-   TouchableWithoutFeedback,
-   TouchableWithoutFeedbackComponent,
-   View
-} from "react-native";
+import {StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import * as PropTypes from "prop-types"
-import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
+import {NOOP, SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
 
-export default class PopoverButton extends Component {
+export default class PopoverCommander extends Component {
 
    constructor(props) {
      super(props);
@@ -125,16 +119,17 @@ export default class PopoverButton extends Component {
    }
 
    _toggleMenu() {
-      console.log("Toggled")
       this.setState({
          showMenu: !this.state.showMenu
       })
    }
+
    _closeMenu() {
-      console.log("Closed");
-      this.setState({
-         showMenu: false
-      });
+      if (this.state.showMenu) {
+         this.setState({
+            showMenu: false
+         });
+      }
    }
 
    _renderDefaultPopoverButton = ({toggle}) => (
@@ -180,28 +175,33 @@ export default class PopoverButton extends Component {
          toggle: () => this._toggleMenu()
       };
 
+      const onPressOutsideMenuItems =
+         this.props.closeOnPressOutsideMenuItems ? () => this._closeMenu() : NOOP;
+
       return (
-         <View style={styles.layer1}>
-            <View style={{
-                  position: 'absolute',
-                  left: this.props.buttonPosition.left,
-                  top: this.props.buttonPosition.top,
-                  right: this.props.buttonPosition.right,
-                  bottom: this.props.buttonPosition.bottom,
-               }} onLayout={
-                  (evt) => this._measureButtonDimension(
-                     evt, (result) => this._computeMenuPosition(result)
-                  )
-               }>
-               {this._renderPopoverButton(popoverButtonProps)}
+         <TouchableWithoutFeedback onPress={onPressOutsideMenuItems}>
+            <View style={styles.layer1}>
+                  <View style={{
+                        position: 'absolute',
+                        left: this.props.buttonPosition.left,
+                        top: this.props.buttonPosition.top,
+                        right: this.props.buttonPosition.right,
+                        bottom: this.props.buttonPosition.bottom,
+                     }} onLayout={
+                        (evt) => this._measureButtonDimension(
+                           evt, (result) => this._computeMenuPosition(result)
+                        )
+                     }>
+                     {this._renderPopoverButton(popoverButtonProps)}
+                  </View>
+                  {this.state.showMenu && this._renderMenus()}
             </View>
-            {this.state.showMenu && this._renderMenus()}
-         </View>
+         </TouchableWithoutFeedback>
       );
    }
 }
 
-PopoverButton.propTypes = {
+PopoverCommander.propTypes = {
    // the top/left/right/button specified in the stylesheet
    buttonPosition: PropTypes.shape({
       left: PropTypes.number,
@@ -213,6 +213,13 @@ PopoverButton.propTypes = {
    // function to render a customized button
    renderButton: PropTypes.func,
    renderMenuItems: PropTypes.func.isRequired,
+
+   // whether the menus disappear after pressing a non-menu area
+   closeOnPressOutsideMenuItems: PropTypes.bool
+};
+
+PopoverCommander.defaultProps = {
+   closeOnPressOutsideMenuItems: true,
 };
 
 const styles = StyleSheet.create({

@@ -1,12 +1,19 @@
 import React, {Component} from "react";
-import {TouchableOpacity, StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import * as PropTypes from "prop-types"
+import {NOOP} from "./Constant";
 
 export default class PopoverOption extends Component {
    render() {
+      const {
+         title,
+         onPress,
+         ...touchableOpacityProps
+      } = this.props;
+
       return (
-         <TouchableOpacity onPress={() => this.props.onPress()} style={[styles.container]}>
-            <Text style={styles.text}>{this.props.title}</Text>
+         <TouchableOpacity onPress={onPress} style={[styles.container]} {...touchableOpacityProps}>
+            <Text style={styles.text}>{title}</Text>
          </TouchableOpacity>
       );
    }
@@ -18,7 +25,7 @@ PopoverOption.propTypes = {
 };
 
 PopoverOption.defaultProps = {
-   onPress: () => {}
+   onPress: NOOP
 };
 
 const styles = StyleSheet.create({

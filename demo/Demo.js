@@ -9,7 +9,7 @@ export default class Demo extends Component {
       <PopoverAndroid.Menu>
          <PopoverAndroid.Option title={"Item One"} onPress={close}/>
          <PopoverAndroid.Option title={"Item Two"} onPress={close}/>
-         <PopoverAndroid.Option title={"Item Three"} onPress={close}/>
+         <PopoverAndroid.Option title={"Item Three"}/>
       </PopoverAndroid.Menu>
    );
 
@@ -30,9 +30,9 @@ export default class Demo extends Component {
                <PopoverAndroid.Placeholder dimension={{width: 60}}/>
             </View>
          </View>
-         <PopoverAndroid.Button buttonPosition={{right: 20, top: 5}}
-                                renderButton={(props) => this._renderPopoverButton(props)}
-                                renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
+         <PopoverAndroid.Commander buttonPosition={{right: 20, top: 5}}
+                                   renderButton={(props) => this._renderPopoverButton(props)}
+                                   renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
       </Layer>
    );
 
