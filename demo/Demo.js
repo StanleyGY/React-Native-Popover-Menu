@@ -5,46 +5,34 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Display";
 
 export default class Demo extends Component {
 
-   _renderPopoverMenuItem = () => (
+   _renderPopoverMenuItem = ({close}) => (
       <PopoverAndroid.Menu>
-         <PopoverAndroid.Option title={"Item One"}/>
-         <PopoverAndroid.Option title={"Item Two"}/>
-         <PopoverAndroid.Option title={"Item Three"}/>
+         <PopoverAndroid.Option title={"Item One"} onPress={close}/>
+         <PopoverAndroid.Option title={"Item Two"} onPress={close}/>
+         <PopoverAndroid.Option title={"Item Three"} onPress={close}/>
       </PopoverAndroid.Menu>
    );
 
    _renderPopoverButton = ({toggle}) => (
-      <TouchableOpacity style={{
-         width: 60,
-      }} onPress={toggle}>
+      <TouchableOpacity style={{width: 60}} onPress={toggle}>
          <Text style={styles.btnText}>Open</Text>
       </TouchableOpacity>
    );
 
    _renderNavBarLayer = () => (
       <Layer>
-
          <View style={[styles.navBar]}>
             <View style={[styles.navBarBtnGroup]}>
                <TouchableOpacity style={{marginLeft: 30}}>
                   <Text style={styles.btnText}>Back</Text>
                </TouchableOpacity>
                <Text style={styles.btnText}>Demo</Text>
-               <PopoverAndroid.Placeholder dimension={{
-                  width: 60,
-               }}/>
+               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
             </View>
          </View>
-
-         <PopoverAndroid.Button buttonPosition={{
-            right: 20,
-            top: 5
-         }} renderButton={(props) =>
-            this._renderPopoverButton(props)
-         } renderMenuItems={(props) =>
-            this._renderPopoverMenuItem(props)
-         }/>
-
+         <PopoverAndroid.Button buttonPosition={{right: 20, top: 5}}
+                                renderButton={(props) => this._renderPopoverButton(props)}
+                                renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
       </Layer>
    );
 

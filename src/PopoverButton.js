@@ -1,5 +1,11 @@
 import React, {Component} from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {
+   StyleSheet,
+   TouchableOpacity,
+   TouchableWithoutFeedback,
+   TouchableWithoutFeedbackComponent,
+   View
+} from "react-native";
 import * as PropTypes from "prop-types"
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
 
@@ -119,9 +125,16 @@ export default class PopoverButton extends Component {
    }
 
    _toggleMenu() {
+      console.log("Toggled")
       this.setState({
          showMenu: !this.state.showMenu
       })
+   }
+   _closeMenu() {
+      console.log("Closed");
+      this.setState({
+         showMenu: false
+      });
    }
 
    _renderDefaultPopoverButton = ({toggle}) => (
@@ -145,9 +158,13 @@ export default class PopoverButton extends Component {
          bottom: this.state.menuStyleBottom,
          right: this.state.menuStyleRight,
       };
+      const menuProps = {
+         close: () => this._closeMenu()
+      };
+
       return (
          <View style={[styles.menu, menuStyle]}>
-            {this.props.renderMenuItems()}
+            {this.props.renderMenuItems(menuProps)}
          </View>
       );
    };

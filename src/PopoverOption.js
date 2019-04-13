@@ -3,21 +3,10 @@ import {TouchableOpacity, StyleSheet, Text} from "react-native";
 import * as PropTypes from "prop-types"
 
 export default class PopoverOption extends Component {
-
-   _handlePressMenuItem() {
-      this.props.onPress();
-      // close the menu item
-
-   }
-
    render() {
       return (
-         <TouchableOpacity
-            onPress={() => this.props.onPress()}
-            style={[styles.container]}>
-            <Text style={styles.text}>
-               {this.props.title}
-            </Text>
+         <TouchableOpacity onPress={() => this.props.onPress()} style={[styles.container]}>
+            <Text style={styles.text}>{this.props.title}</Text>
          </TouchableOpacity>
       );
    }
