@@ -11,8 +11,20 @@
    this environment variable
 4. Make sure that the owner and group of this project are not `root`
 
-## Demonstration
+## How it works
+
+Crucially, any area of an interact-able component such as `TouchableOpacity` will only
+receive the user events provided that this area is contained in its parent component,
+and this area of its parent component is contained in its grandparent's component, and 
+the chain goes on. 
+
+TBD:
+1. Any area interactable, appearing above another interacable, will receive the 
+events first?
+
+
+## Usage
  
    
-    
+
 
