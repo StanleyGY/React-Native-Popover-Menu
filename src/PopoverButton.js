@@ -19,17 +19,16 @@ export default class PopoverButton extends Component {
       };
    }
 
+   // noinspection JSMethodCanBeStatic
    _measureButtonDimension(evt, callback) {
       const {width, height} = evt.nativeEvent.layout;
-      this._buttonWidth = width;
-      this._buttonHeight = height;
 
       if (callback) {
-         callback();
+         callback({width, height});
       }
    }
 
-   _computeMenuPosition() {
+   _computeMenuPosition(buttonDimension) {
       /**
        * Compute the position of the menu. Split the screen into four quadrants.
        * If the popover-menu button is in the first quadrant:
@@ -42,6 +41,8 @@ export default class PopoverButton extends Component {
        *    the menu shows on the upper left of the button
        *
        * */
+      const buttonWidth = buttonDimension.width;
+      const buttonHeight = buttonDimension.height;
 
       // the coordinate of the button container over entire layer
       // specified by user
@@ -63,20 +64,20 @@ export default class PopoverButton extends Component {
       if (buttonPosition.top) {
          quadrant += (buttonPosition.top < half_screen_height ? 1 : 2);
          buttonTop = buttonPosition.top;
-         buttonBottom = buttonPosition.top + this._buttonHeight;
+         buttonBottom = buttonPosition.top + buttonHeight;
       } else if (buttonPosition.bottom) {
-         quadrant += (buttonPosition.bottom - this._buttonHeight < half_screen_height ? 1 : 2);
+         quadrant += (buttonPosition.bottom - buttonHeight < half_screen_height ? 1 : 2);
          buttonBottom = SCREEN_HEIGHT - buttonPosition.bottom;
-         buttonTop = buttonBottom - this._buttonHeight;
+         buttonTop = buttonBottom - buttonHeight;
       }
       if (buttonPosition.left) {
          quadrant += (buttonPosition.left < half_screen_width ? 1 : 2);
          buttonLeft = buttonPosition.left;
-         buttonRight = buttonPosition.left + this._buttonWidth;
+         buttonRight = buttonPosition.left + buttonWidth;
       } else if (buttonPosition.right) {
-         quadrant += (buttonPosition.right - this._buttonWidth < half_screen_width ? 1 : 2);
+         quadrant += (buttonPosition.right - buttonWidth < half_screen_width ? 1 : 2);
          buttonRight = SCREEN_WIDTH - buttonPosition.right;
-         buttonLeft = buttonRight - this._buttonWidth;
+         buttonLeft = buttonRight - buttonWidth;
       }
 
       // the coordinate of the menu container over the entire layer
@@ -146,9 +147,7 @@ export default class PopoverButton extends Component {
       };
       return (
          <View style={[styles.menu, menuStyle]}>
-            <View style={{flexDirection: 'column'}}>
-            {this.props.children}
-            </View>
+            {this.props.renderMenuItems()}
          </View>
       );
    };
@@ -174,7 +173,7 @@ export default class PopoverButton extends Component {
                   bottom: this.props.buttonPosition.bottom,
                }} onLayout={
                   (evt) => this._measureButtonDimension(
-                     evt, () => this._computeMenuPosition()
+                     evt, (result) => this._computeMenuPosition(result)
                   )
                }>
                {this._renderPopoverButton(popoverButtonProps)}
@@ -196,6 +195,7 @@ PopoverButton.propTypes = {
 
    // function to render a customized button
    renderButton: PropTypes.func,
+   renderMenuItems: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -208,8 +208,5 @@ const styles = StyleSheet.create({
    },
    menu: {
       position: 'absolute',
-      backgroundColor: '#010101',
-      flexDirection: 'column',
-      minWidth: 80,
    }
 });

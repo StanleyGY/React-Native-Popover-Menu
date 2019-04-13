@@ -4,6 +4,12 @@ import * as PropTypes from "prop-types"
 
 export default class PopoverOption extends Component {
 
+   _handlePressMenuItem() {
+      this.props.onPress();
+      // close the menu item
+
+   }
+
    render() {
       return (
          <TouchableOpacity

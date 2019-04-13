@@ -16,8 +16,7 @@ export default class PopoverMenu extends Component {
 const styles = StyleSheet.create({
    container: {
       flexDirection: 'column',
-
       backgroundColor: '#101010',
-      minWidth: 100,
+      minWidth: 80,
    }
 });

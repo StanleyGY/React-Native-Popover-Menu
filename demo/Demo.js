@@ -5,6 +5,14 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Display";
 
 export default class Demo extends Component {
 
+   _renderPopoverMenuItem = () => (
+      <PopoverAndroid.Menu>
+         <PopoverAndroid.Option title={"Item One"}/>
+         <PopoverAndroid.Option title={"Item Two"}/>
+         <PopoverAndroid.Option title={"Item Three"}/>
+      </PopoverAndroid.Menu>
+   );
+
    _renderPopoverButton = ({toggle}) => (
       <TouchableOpacity style={{
          width: 60,
@@ -15,6 +23,7 @@ export default class Demo extends Component {
 
    _renderNavBarLayer = () => (
       <Layer>
+
          <View style={[styles.navBar]}>
             <View style={[styles.navBarBtnGroup]}>
                <TouchableOpacity style={{marginLeft: 30}}>
@@ -26,16 +35,16 @@ export default class Demo extends Component {
                }}/>
             </View>
          </View>
+
          <PopoverAndroid.Button buttonPosition={{
             right: 20,
             top: 5
          }} renderButton={(props) =>
             this._renderPopoverButton(props)
-         }>
-            <PopoverAndroid.Option title={"Item One"}/>
-            <PopoverAndroid.Option title={"Item Two"}/>
-            <PopoverAndroid.Option title={"Item Three"}/>
-         </PopoverAndroid.Button>
+         } renderMenuItems={(props) =>
+            this._renderPopoverMenuItem(props)
+         }/>
+
       </Layer>
    );
 
