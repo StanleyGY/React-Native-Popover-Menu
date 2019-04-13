@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {PopoverAndroid} from "../src";
+import {Layer, PopoverAndroid} from "../src";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Display";
 
 export default class Demo extends Component {
@@ -8,14 +8,13 @@ export default class Demo extends Component {
    _renderPopoverButton = ({toggle}) => (
       <TouchableOpacity style={{
          width: 60,
-         position: 'absolute',
       }} onPress={toggle}>
          <Text style={styles.btnText}>Open</Text>
       </TouchableOpacity>
    );
 
-   _renderNavBar = () => (
-      <PopoverAndroid.Layer>
+   _renderNavBarLayer = () => (
+      <Layer>
          <View style={[styles.navBar]}>
             <View style={[styles.navBarBtnGroup]}>
                <TouchableOpacity style={{marginLeft: 30}}>
@@ -27,19 +26,20 @@ export default class Demo extends Component {
                }}/>
             </View>
          </View>
-
          <PopoverAndroid.Button buttonPosition={{
-            right: 70,
+            right: 20,
             top: 5
-         }} renderButton={(props) => this._renderPopoverButton(props)}>
-            <PopoverAndroid.Menu>
-               <PopoverAndroid.Option title={"123"}/>
-            </PopoverAndroid.Menu>
+         }} renderButton={(props) =>
+            this._renderPopoverButton(props)
+         }>
+            <PopoverAndroid.Option title={"Item One"}/>
+            <PopoverAndroid.Option title={"Item Two"}/>
+            <PopoverAndroid.Option title={"Item Three"}/>
          </PopoverAndroid.Button>
-      </PopoverAndroid.Layer>
+      </Layer>
    );
 
-   _renderMainContent = () => (
+   _renderMainContentLayer = () => (
       <ScrollView>
          <Text>
             Though yet of Hamlet our dear brother's death {"\n"}
@@ -115,8 +115,8 @@ export default class Demo extends Component {
    render() {
       return (
          <View style={styles.container}>
-            {this._renderMainContent()}
-            {this._renderNavBar()}
+            {this._renderMainContentLayer()}
+            {this._renderNavBarLayer()}
          </View>
       );
    }

@@ -1,11 +1,8 @@
 import React, {Component} from "react";
-import {Dimensions, View, StyleSheet} from "react-native";
-
-const SCREEN_WIDTH = Dimensions.get("screen").width;
-const SCREEN_HEIGHT = Dimensions.get("screen").height;
+import {StyleSheet, View} from "react-native";
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
 
 export default class PopoverLayer extends Component {
-
    render() {
       return (
          <View style={[styles.layer]} pointerEvents="box-none">

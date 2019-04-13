@@ -7,7 +7,7 @@ export default class PopoverOption extends Component {
    render() {
       return (
          <TouchableOpacity
-            onPress={this.props.onPress}
+            onPress={() => this.props.onPress()}
             style={[styles.container]}>
             <Text style={styles.text}>
                {this.props.title}
@@ -28,7 +28,11 @@ PopoverOption.defaultProps = {
 
 const styles = StyleSheet.create({
    container: {
-      alignItems: 'center'
+      alignItems: 'center',
+      marginTop: 10,
+      marginBottom: 10,
+      marginLeft: 5,
+      marginRight: 5,
    },
    text: {
       fontSize: 18,
