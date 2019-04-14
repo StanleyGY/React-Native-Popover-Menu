@@ -181,20 +181,20 @@ export default class PopoverCommander extends Component {
       return (
          <TouchableWithoutFeedback onPress={onPressOutsideMenuItems}>
             <View style={styles.layer1}>
-                  <View style={{
-                        position: 'absolute',
-                        left: this.props.buttonPosition.left,
-                        top: this.props.buttonPosition.top,
-                        right: this.props.buttonPosition.right,
-                        bottom: this.props.buttonPosition.bottom,
-                     }} onLayout={
-                        (evt) => this._measureButtonDimension(
-                           evt, (result) => this._computeMenuPosition(result)
-                        )
-                     }>
-                     {this._renderPopoverButton(popoverButtonProps)}
-                  </View>
-                  {this.state.showMenu && this._renderMenus()}
+               <View style={{
+                     position: 'absolute',
+                     left: this.props.buttonPosition.left,
+                     top: this.props.buttonPosition.top,
+                     right: this.props.buttonPosition.right,
+                     bottom: this.props.buttonPosition.bottom,
+                  }} onLayout={
+                     (evt) => this._measureButtonDimension(
+                        evt, (result) => this._computeMenuPosition(result)
+                     )
+                  }>
+                  {this._renderPopoverButton(popoverButtonProps)}
+               </View>
+               {this.state.showMenu && this._renderMenus()}
             </View>
          </TouchableWithoutFeedback>
       );

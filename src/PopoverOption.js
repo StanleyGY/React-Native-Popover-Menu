@@ -12,7 +12,9 @@ export default class PopoverOption extends Component {
       } = this.props;
 
       return (
-         <TouchableOpacity onPress={onPress} style={[styles.container]} {...touchableOpacityProps}>
+         <TouchableOpacity onPress={onPress}
+                           style={[styles.container, this.props.style]}
+                           {...touchableOpacityProps}>
             <Text style={styles.text}>{title}</Text>
          </TouchableOpacity>
       );
@@ -22,6 +24,7 @@ export default class PopoverOption extends Component {
 PopoverOption.propTypes = {
    title: PropTypes.string.isRequired,
    onPress: PropTypes.func,
+   style: PropTypes.object,
 };
 
 PopoverOption.defaultProps = {
