@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import * as PropTypes from "prop-types"
-import {NOOP, SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Constant";
 
 export default class PopoverCommander extends Component {
 
@@ -164,6 +164,23 @@ export default class PopoverCommander extends Component {
       );
    };
 
+   _addOutsideMenuCloseHOC(children) {
+      /**
+       * Add a HOC to accept user events outside the menu
+       * */
+
+      const willRespondOutsideMenu =
+         this.props.closeOnPressOutsideMenuItems && this.state.showMenu;
+
+      return (
+         !willRespondOutsideMenu ? children : (
+            <TouchableWithoutFeedback onPress={() => this._closeMenu()}>
+               {children}
+            </TouchableWithoutFeedback>
+         )
+      );
+   }
+
    render() {
       /**
        *  Note:
@@ -175,11 +192,8 @@ export default class PopoverCommander extends Component {
          toggle: () => this._toggleMenu()
       };
 
-      const onPressOutsideMenuItems =
-         this.props.closeOnPressOutsideMenuItems ? () => this._closeMenu() : NOOP;
-
       return (
-         <TouchableWithoutFeedback onPress={onPressOutsideMenuItems}>
+         this._addOutsideMenuCloseHOC((
             <View style={styles.layer1}>
                <View style={{
                      position: 'absolute',
@@ -196,7 +210,7 @@ export default class PopoverCommander extends Component {
                </View>
                {this.state.showMenu && this._renderMenus()}
             </View>
-         </TouchableWithoutFeedback>
+         ))
       );
    }
 }
