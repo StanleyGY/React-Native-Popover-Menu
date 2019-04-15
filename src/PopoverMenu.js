@@ -51,7 +51,7 @@ PopoverMenu.defaultProps = {
 const styles = StyleSheet.create({
    container: {
       flexDirection: 'column',
-      backgroundColor: '#455A64',
       minWidth: 80,
+      backgroundColor: '#455A64',
    }
 });
