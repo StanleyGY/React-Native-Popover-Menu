@@ -25,26 +25,27 @@ export default class PopoverCommander extends Component {
    _startShowMenuAnimation() {
       Animated.timing(this._scaleAnim, {
          toValue: 1,
-         duration: 150,
+         duration: 180,
       }).start();
       Animated.timing(this._opacityAnim, {
          toValue: 1,
-         duration: 150
+         duration: 180
       }).start();
    }
 
    _startHideMenuAnimation() {
       Animated.timing(this._scaleAnim, {
          toValue: 0.01,
-         duration: 100
+         duration: 180
       }).start(() => {
+         // the menu should hide after the animation finishes
          this.setState({
             showMenu: false
          });
       });
       Animated.timing(this._opacityAnim, {
          toValue: 0.01,
-         duration: 100
+         duration: 180
       });
    }
 
@@ -147,6 +148,7 @@ export default class PopoverCommander extends Component {
          this._startHideMenuAnimation();
       } else {
          // start to appear
+         // the menu should appear immediately
          this.setState({ showMenu: true });
          this._startShowMenuAnimation();
       }
@@ -268,8 +270,6 @@ PopoverCommander.propTypes = {
 
    // whether the menus disappear after pressing a non-menu area
    closeOnPressOutsideMenuItems: PropTypes.bool,
-
-   showScaleUpAnimation: PropTypes.bool,
 };
 
 PopoverCommander.defaultProps = {
