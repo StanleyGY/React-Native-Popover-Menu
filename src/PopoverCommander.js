@@ -96,6 +96,16 @@ export default class PopoverCommander extends Component {
    }
 
    // noinspection JSMethodCanBeStatic
+   _styleSheetPositionToCoordinate(stylePosition) {
+      return {
+         top: stylePosition.top,
+         left: stylePosition.left,
+         bottom: !stylePosition.bottom ? null : SCREEN_HEIGHT - stylePosition.bottom,
+         right: !stylePosition.right ? null : SCREEN_WIDTH - stylePosition.right
+      };
+   }
+
+   // noinspection JSMethodCanBeStatic
    _coordinateToStyleSheetPosition(coord) {
       const {
          top: topCoord,
@@ -117,38 +127,33 @@ export default class PopoverCommander extends Component {
       const buttonWidth = buttonDimension.width;
       const buttonHeight = buttonDimension.height;
 
-      // determine the quadrant
       const half_screen_width = SCREEN_WIDTH / 2;
       const half_screen_height = SCREEN_HEIGHT / 2;
-      let quadrant = 0;
 
-      // compute the coordinate of the button container over entire layer
-      // (no position missing)
-      let buttonTop = 0;
-      let buttonBottom = 0;
-      let buttonLeft = 0;
-      let buttonRight = 0;
+      let {
+         top: buttonTop,
+         left: buttonLeft,
+         bottom: buttonBottom,
+         right: buttonRight,
+      } = this._styleSheetPositionToCoordinate(buttonStylePosition);
 
-      // require either of top / bottom and left / right not null
-      if (buttonStylePosition.top) {
-         quadrant += (buttonStylePosition.top < half_screen_height ? 1 : 2);
-         buttonTop = buttonStylePosition.top;
-         buttonBottom = buttonStylePosition.top + buttonHeight;
-      } else if (buttonStylePosition.bottom) {
-         quadrant += (buttonStylePosition.bottom - buttonHeight < half_screen_height ? 1 : 2);
-         buttonBottom = SCREEN_HEIGHT - buttonStylePosition.bottom;
+      if (buttonTop) {
+         buttonBottom = buttonTop + buttonHeight;
+      } else if (buttonBottom) {
          buttonTop = buttonBottom - buttonHeight;
       }
-
-      if (buttonStylePosition.left) {
-         quadrant += (buttonStylePosition.left < half_screen_width ? 1 : 2);
-         buttonLeft = buttonStylePosition.left;
-         buttonRight = buttonStylePosition.left + buttonWidth;
-      } else if (buttonStylePosition.right) {
-         quadrant += (buttonStylePosition.right - buttonWidth < half_screen_width ? 1 : 2);
-         buttonRight = SCREEN_WIDTH - buttonStylePosition.right;
+      if (buttonLeft) {
+         buttonRight = buttonLeft + buttonWidth;
+      } else if (buttonRight) {
          buttonLeft = buttonRight - buttonWidth;
       }
+
+      // determine the quadrant
+      let quadrant = (
+         buttonTop < half_screen_height ? 1 : 3
+      ) + (
+         buttonLeft < half_screen_width ? 0 : 1
+      );
 
       return {
          buttonTop,
@@ -201,7 +206,7 @@ export default class PopoverCommander extends Component {
    }
 
    // noinspection JSMethodCanBeStatic
-   __computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo) {
+   _computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo) {
       const {
          quadrant
       } = buttonPositionInfo;
@@ -223,10 +228,10 @@ export default class PopoverCommander extends Component {
          arrowStyleTop = -arrowSize * 0.5;
          arrowStyleRight = arrowOffset;
       } else if (quadrant === 3) {
-         arrowStyleBottom = arrowSize * 0.5;
+         arrowStyleBottom = -arrowSize * 0.5;
          arrowStyleLeft = arrowOffset;
       } else if (quadrant === 4) {
-         arrowStyleBottom = arrowSize * 0.5;
+         arrowStyleBottom = -arrowSize * 0.5;
          arrowStyleRight = arrowOffset;
       }
 
@@ -267,7 +272,7 @@ export default class PopoverCommander extends Component {
       const {arrowStyleTop, arrowStyleLeft, arrowStyleBottom, arrowStyleRight} =
          this.props.computeArrowPosition ?
          this.props.computeArrowPosition(buttonPositionInfo, arrowInfo) :
-         this.__computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo);
+         this._computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo);
 
       // convert from coordinate to stylesheet position
       const {
