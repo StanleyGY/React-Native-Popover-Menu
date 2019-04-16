@@ -14,40 +14,41 @@ export default class Demo extends Component {
       </PopoverAndroid.Menu>
    );
 
-   _renderPopoverButton = ({toggle}) => (
-      <TouchableOpacity style={{width: 60}} onPress={toggle}>
-         <Text style={styles.btnText}>Open</Text>
-      </TouchableOpacity>
-   );
+   _renderPopoverButton(title) {
+      return ({toggle}) => (
+         <TouchableOpacity style={{width: 60}} onPress={toggle}>
+            <Text style={styles.btnText}>{title}</Text>
+         </TouchableOpacity>
+      );
+   }
 
-   _renderNavBarLayer = () => (
+   _renderLayer = () => (
       <Layer>
-         <View style={[styles.navBar]}>
-            <View style={[styles.navBarBtnGroup]}>
-               <TouchableOpacity style={{marginLeft: 30}}>
-                  <Text style={styles.btnText}>Back</Text>
-               </TouchableOpacity>
-               <Text style={styles.btnText}>Demo</Text>
-               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+         <View>
+            <View style={[styles.navBar]}>
+               <View style={[styles.navBarBtnGroup]}>
+                  <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+                  <Text style={styles.btnText}>Demo</Text>
+                  <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+               </View>
             </View>
+            <ScrollView>
+               <Text>{SHAKESPEAR_TEXT}</Text>
+            </ScrollView>
          </View>
+         <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 5}}
+                                   renderButton={(props) => this._renderPopoverButton("Back")(props)}
+                                   renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
          <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 5}}
-                                   renderButton={(props) => this._renderPopoverButton(props)}
+                                   renderButton={(props) => this._renderPopoverButton("Open")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
       </Layer>
-   );
-
-   _renderMainContentLayer = () => (
-      <ScrollView>
-         <Text>{SHAKESPEAR_TEXT}</Text>
-      </ScrollView>
    );
 
    render() {
       return (
          <View style={styles.container}>
-            {this._renderMainContentLayer()}
-            {this._renderNavBarLayer()}
+            {this._renderLayer()}
          </View>
       );
    }

@@ -10,6 +10,7 @@ export default class PopoverCommander extends Component {
 
       this._scaleAnim = new Animated.Value(0.01);
       this._opacityAnim = new Animated.Value(0.01);
+      this._translateX = new Animated.Value(0.01);
 
       this.state = {
          showMenu: false,
@@ -28,20 +29,29 @@ export default class PopoverCommander extends Component {
    }
 
    _startShowMenuAnimation() {
+      const toValue = 1;
+      const duration = 180;
       Animated.timing(this._scaleAnim, {
-         toValue: 1,
-         duration: 180,
+         toValue: toValue,
+         duration: duration,
       }).start();
       Animated.timing(this._opacityAnim, {
-         toValue: 1,
-         duration: 180
+         toValue: toValue,
+         duration: duration
+      }).start();
+      Animated.timing(this._translateX, {
+         toValue: toValue,
+         duration: duration
       }).start();
    }
 
    _startHideMenuAnimation() {
+      const toValue = 0.01;
+      const duration = 180;
+
       Animated.timing(this._scaleAnim, {
-         toValue: 0.01,
-         duration: 180
+         toValue: toValue,
+         duration: duration
       }).start(() => {
          // the menu should hide after the animation finishes
          this.setState({
@@ -49,9 +59,13 @@ export default class PopoverCommander extends Component {
          });
       });
       Animated.timing(this._opacityAnim, {
-         toValue: 0.01,
-         duration: 180
-      });
+         toValue: toValue,
+         duration: duration
+      }).start();
+      Animated.timing(this._translateX, {
+         toValue: toValue,
+         duration: duration
+      }).start();
    }
 
    _toggleMenu() {
@@ -99,7 +113,7 @@ export default class PopoverCommander extends Component {
    }
 
    // noinspection JSMethodCanBeStatic
-   _computeButtonPosition(buttonStylePosition, buttonDimension) {
+   _computeButtonPositionRelToScreen(buttonStylePosition, buttonDimension) {
       const buttonWidth = buttonDimension.width;
       const buttonHeight = buttonDimension.height;
 
@@ -146,7 +160,7 @@ export default class PopoverCommander extends Component {
    }
 
    // noinspection JSMethodCanBeStatic
-   _computeMenuPosition(buttonPositionInfo) {
+   _computeMenuPositionRelToScreen(buttonPositionInfo) {
       const {
          buttonTop,
          buttonLeft,
@@ -187,47 +201,40 @@ export default class PopoverCommander extends Component {
    }
 
    // noinspection JSMethodCanBeStatic
-   _computeArrowPosition(buttonPositionInfo, menuPositionInfo, arrowInfo) {
+   __computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo) {
       const {
          quadrant
       } = buttonPositionInfo;
-
-      const {
-         menuTop,
-         menuLeft,
-         menuBottom,
-         menuRight,
-      } = menuPositionInfo;
 
       const {
          arrowSize,
          arrowOffset,
       } = arrowInfo;
 
-      let arrowTop = null;
-      let arrowLeft = null;
-      let arrowBottom = null;
-      let arrowRight = null;
+      let arrowStyleTop = null;
+      let arrowStyleLeft = null;
+      let arrowStyleBottom = null;
+      let arrowStyleRight = null;
 
       if (quadrant === 1) {
-         arrowTop = menuTop - arrowSize * 0.5;
-         arrowLeft = menuLeft + arrowOffset;
+         arrowStyleTop = -arrowSize * 0.5;
+         arrowStyleLeft = arrowOffset;
       } else if (quadrant === 2) {
-         arrowTop = menuTop - arrowSize * 0.5;
-         arrowRight = menuRight - arrowOffset;
+         arrowStyleTop = -arrowSize * 0.5;
+         arrowStyleRight = arrowOffset;
       } else if (quadrant === 3) {
-         arrowBottom = menuBottom + arrowSize * 0.5;
-         arrowLeft = menuLeft + arrowOffset;
+         arrowStyleBottom = arrowSize * 0.5;
+         arrowStyleLeft = arrowOffset;
       } else if (quadrant === 4) {
-         arrowBottom = menuBottom + arrowSize * 0.5;
-         arrowRight = menuRight - arrowOffset;
+         arrowStyleBottom = arrowSize * 0.5;
+         arrowStyleRight = arrowOffset;
       }
 
       return {
-         arrowTop,
-         arrowLeft,
-         arrowBottom,
-         arrowRight,
+         arrowStyleLeft,
+         arrowStyleTop,
+         arrowStyleBottom,
+         arrowStyleRight,
       };
    }
 
@@ -244,23 +251,23 @@ export default class PopoverCommander extends Component {
        *    the menu shows on the upper left of the button
        *
        * */
-      const buttonPositionInfo = this._computeButtonPosition(
+      const buttonPositionInfo = this._computeButtonPositionRelToScreen(
          this.props.buttonStylePosition, buttonDimension
       );
 
       const menuPositionInfo = this.props.computeMenuPosition ?
          this.props.computeMenuPosition(buttonPositionInfo) :
-         this._computeMenuPosition(buttonPositionInfo);
+         this._computeMenuPositionRelToScreen(buttonPositionInfo);
 
       const arrowInfo = {
          arrowSize: this.props.arrowSize,
          arrowOffset: this.props.arrowOffset,
       };
 
-      const {arrowTop, arrowLeft, arrowBottom, arrowRight} =
+      const {arrowStyleTop, arrowStyleLeft, arrowStyleBottom, arrowStyleRight} =
          this.props.computeArrowPosition ?
-         this.props.computeArrowPosition(buttonPositionInfo, menuPositionInfo, arrowInfo) :
-         this._computeArrowPosition(buttonPositionInfo, menuPositionInfo, arrowInfo);
+         this.props.computeArrowPosition(buttonPositionInfo, arrowInfo) :
+         this.__computeArrowStylePositionRelToMenu(buttonPositionInfo, arrowInfo);
 
       // convert from coordinate to stylesheet position
       const {
@@ -273,18 +280,6 @@ export default class PopoverCommander extends Component {
          left: menuPositionInfo.menuLeft,
          bottom: menuPositionInfo.menuBottom,
          right: menuPositionInfo.menuRight
-      });
-
-      const {
-         top: arrowStyleTop,
-         left: arrowStyleLeft,
-         bottom: arrowStyleBottom,
-         right: arrowStyleRight
-      } = this._coordinateToStyleSheetPosition({
-         top: arrowTop,
-         left: arrowLeft,
-         bottom: arrowBottom,
-         right: arrowRight
       });
 
       // compute the corresponding left/right/bottom/top in stylesheet
@@ -307,63 +302,26 @@ export default class PopoverCommander extends Component {
          top: this.state.arrowStyleTop,
          right: this.state.arrowStyleRight,
          bottom: this.state.arrowStyleBottom,
-         transform: [
-            {
-               rotateZ: '45deg',
-            }
-         ],
          backgroundColor: this.props.arrowColor,
          width: this.props.arrowSize,
          height: this.props.arrowSize,
+         transform: [
+            {
+               rotateZ:  '45deg'
+            }
+         ]
       };
-
       return (
          <View style={[arrowStyle, this.props.arrowStyle]}/>
       );
    }
 
    _renderMenu() {
-      const menuStyle = {
-         top: this.state.menuStyleTop,
-         left: this.state.menuStyleLeft,
-         bottom: this.state.menuStyleBottom,
-         right: this.state.menuStyleRight,
-      };
       const menuProps = {
          close: () => this._closeMenu()
       };
-      return (
-         <View style={[styles.menu, menuStyle]}>
-            {this.props.renderMenuItems(menuProps)}
-         </View>
-      );
+      return this.props.renderMenuItems(menuProps);
    };
-
-   _renderAnimatableLayer() {
-      const animationStyle = {
-         transform: [
-            {
-               scale: this._scaleAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0, 1],
-                  extrapolate: 'clamp'
-               }),
-            }
-         ],
-         opacity: this._opacityAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-            extrapolate: 'clamp'
-         })
-      };
-
-      return (
-         <Animated.View style={animationStyle}>
-            {this._renderArrow()}
-            {this._renderMenu()}
-         </Animated.View>
-      )
-   }
 
    _renderDefaultPopoverButton = ({toggle}) => (
       <TouchableOpacity style={{
@@ -419,12 +377,58 @@ export default class PopoverCommander extends Component {
       );
    }
 
+   _addAnimationHOC(children) {
+      /**
+       * Wrap the menu container into an animation HOC
+       * */
+      const animationStyle = {
+         transform: [
+            {
+               scale: this._scaleAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 1],
+                  extrapolate: 'clamp'
+               })
+            },
+            {
+               translateX: this._translateX.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [9, 0],
+                  extrapolate: 'clamp'
+               })
+            }
+         ],
+         opacity: this._opacityAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: 'clamp'
+         }),
+         position: 'absolute',
+         left: this.state.menuStyleLeft,
+         top: this.state.menuStyleTop,
+         right: this.state.menuStyleRight,
+         bottom: this.state.menuStyleBottom,
+      };
+
+      return (
+         <Animated.View style={animationStyle}>
+            {children}
+         </Animated.View>
+      )
+   }
+
    render() {
       return (
          this._addOutsideMenuCloseHOC((
             <View style={styles.layer1}>
                {this._renderPopoverButton()}
-               {this.state.showMenu && this._renderAnimatableLayer()}
+               {this.state.showMenu && this._addAnimationHOC((
+                  <View>
+                     {this._renderMenu()}
+                     {this._renderArrow()}
+
+                  </View>
+               ))}
             </View>
          ))
       );
