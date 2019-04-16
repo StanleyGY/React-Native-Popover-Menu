@@ -26,7 +26,7 @@ export default class Demo extends Component {
       <Layer>
          <View>
             <View style={[styles.navBar]}>
-               <View style={[styles.navBarBtnGroup]}>
+               <View style={[styles.btnGroup]}>
                   <PopoverAndroid.Placeholder dimension={{width: 60}}/>
                   <Text style={styles.btnText}>Demo</Text>
                   <PopoverAndroid.Placeholder dimension={{width: 60}}/>
@@ -36,11 +36,24 @@ export default class Demo extends Component {
                <Text>{SHAKESPEAR_TEXT}</Text>
             </ScrollView>
          </View>
+         <View style={styles.footer}>
+            <View style={[styles.btnGroup]}>
+               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+               <Text style={styles.btnText}>Demo</Text>
+               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+            </View>
+         </View>
          <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 5}}
-                                   renderButton={(props) => this._renderPopoverButton("Back")(props)}
+                                   renderButton={(props) => this._renderPopoverButton("Open1")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
          <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 5}}
-                                   renderButton={(props) => this._renderPopoverButton("Open")(props)}
+                                   renderButton={(props) => this._renderPopoverButton("Open2")(props)}
+                                   renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
+         <PopoverAndroid.Commander buttonStylePosition={{left: 20, top: 532}}
+                                   renderButton={(props) => this._renderPopoverButton("Open3")(props)}
+                                   renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
+         <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 532}}
+                                   renderButton={(props) => this._renderPopoverButton("Open4")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
       </Layer>
    );
@@ -59,14 +72,27 @@ const styles = StyleSheet.create({
       height: SCREEN_HEIGHT,
       width: SCREEN_WIDTH,
    },
+
    navBar: {
-      height: 36,
+      height: 45,
       backgroundColor: 'rgb(65, 65, 65)',
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
    },
-   navBarBtnGroup: {
+
+   footer: {
+      height: 45,
+      backgroundColor: 'rgb(65, 65, 65)',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+
+      position: 'absolute',
+      top: 523,
+   },
+
+   btnGroup: {
       width: SCREEN_WIDTH,
       flexDirection: 'row',
       justifyContent: 'space-between'
