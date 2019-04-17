@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {Layer, PopoverAndroid} from "../src";
+import {Layer, Popover} from "../src";
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from "./Display";
 import {SHAKESPEAR_TEXT} from "../src/Constant";
 
 export default class Demo extends Component {
 
    _renderPopoverMenuItem = ({close}) => (
-      <PopoverAndroid.Menu>
-         <PopoverAndroid.Option title={"Item One"} onPress={close}/>
-         <PopoverAndroid.Option title={"Item Two"} onPress={close}/>
-         <PopoverAndroid.Option title={"Item Three"}/>
-      </PopoverAndroid.Menu>
+      <Popover.Menu>
+         <Popover.Option title={"Item One"} onPress={close}/>
+         <Popover.Option title={"Item Two"} onPress={close}/>
+         <Popover.Option title={"Item Three"}/>
+      </Popover.Menu>
    );
 
    _renderPopoverButton(title) {
@@ -27,9 +27,9 @@ export default class Demo extends Component {
          <View>
             <View style={[styles.navBar]}>
                <View style={[styles.btnGroup]}>
-                  <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+                  <Popover.Placeholder dimension={{width: 60}}/>
                   <Text style={styles.btnText}>Demo</Text>
-                  <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+                  <Popover.Placeholder dimension={{width: 60}}/>
                </View>
             </View>
             <ScrollView>
@@ -38,21 +38,21 @@ export default class Demo extends Component {
          </View>
          <View style={styles.footer}>
             <View style={[styles.btnGroup]}>
-               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+               <Popover.Placeholder dimension={{width: 60}}/>
                <Text style={styles.btnText}>Demo</Text>
-               <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+               <Popover.Placeholder dimension={{width: 60}}/>
             </View>
          </View>
-         <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 9}}
+         <Popover.Commander buttonStylePosition={{left: 30, top: 9}}
                                    renderButton={(props) => this._renderPopoverButton("Open1")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
-         <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 9}}
+         <Popover.Commander buttonStylePosition={{right: 20, top: 9}}
                                    renderButton={(props) => this._renderPopoverButton("Open2")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
-         <PopoverAndroid.Commander buttonStylePosition={{left: 20, top: 532}}
+         <Popover.Commander buttonStylePosition={{left: 20, top: 532}}
                                    renderButton={(props) => this._renderPopoverButton("Open3")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
-         <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 532}}
+         <Popover.Commander buttonStylePosition={{right: 20, top: 532}}
                                    renderButton={(props) => this._renderPopoverButton("Open4")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
       </Layer>

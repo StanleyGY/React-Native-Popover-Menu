@@ -1,9 +1,8 @@
 # React Native Popover Menu
 
 ## Introduction
-`React-Native-Popover-Menu` is a component offered as a work-around
-for a known issue on Android. Please refer to the `How it works` section
-if you expect to have a better understanding of the background. 
+`React-Native-Popover-Menu` is a very simple component to use without adding any native
+dependencies. See more details on the background on *How it works* section.
 
 ## Demo
 
@@ -15,9 +14,9 @@ The code snippets:
  <View>
     <View style={[styles.navBar]}>
        <View style={[styles.btnGroup]}>
-          <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+          <Popover.Placeholder dimension={{width: 60}}/>
           <Text style={styles.btnText}>Demo</Text>
-          <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+          <Popover.Placeholder dimension={{width: 60}}/>
        </View>
     </View>
     <ScrollView>
@@ -26,21 +25,21 @@ The code snippets:
  </View>
  <View style={styles.footer}>
     <View style={[styles.btnGroup]}>
-       <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+       <Popover.Placeholder dimension={{width: 60}}/>
        <Text style={styles.btnText}>Demo</Text>
-       <PopoverAndroid.Placeholder dimension={{width: 60}}/>
+       <Popover.Placeholder dimension={{width: 60}}/>
     </View>
  </View>
- <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 5}}
+ <Popover.Commander buttonStylePosition={{left: 30, top: 9}}
                            renderButton={(props) => this._renderPopoverButton("Open1")(props)}
                            renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
- <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 5}}
+ <Popover.Commander buttonStylePosition={{right: 20, top: 9}}
                            renderButton={(props) => this._renderPopoverButton("Open2")(props)}
                            renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
- <PopoverAndroid.Commander buttonStylePosition={{left: 20, top: 532}}
+ <Popover.Commander buttonStylePosition={{left: 20, top: 532}}
                            renderButton={(props) => this._renderPopoverButton("Open3")(props)}
                            renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
- <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 532}}
+ <Popover.Commander buttonStylePosition={{right: 20, top: 532}}
                            renderButton={(props) => this._renderPopoverButton("Open4")(props)}
                            renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
 </Layer>
@@ -74,7 +73,7 @@ more details on the necessity of a screen-sized layer.
 |-------|------|------------|
 |children|  | Child components residing inside the layer
 
-#### PopoverAndroid.Commander
+#### Popover.Commander
 
 Responsible for the styles and animations of both button and menu container.
 
@@ -91,7 +90,7 @@ Responsible for the styles and animations of both button and menu container.
 |arrowSize| number | Size of the arrow | 10 | false |
 |arrowOffset| number | Offset of the arrow relative to the edge of the menu container | 30 | false |
 
-#### PopoverAndroid.Menu
+#### Popover.Menu
 
 Responsible for the style of the menu container.
 
@@ -102,7 +101,7 @@ Responsible for the style of the menu container.
 |lineSplitterWidth| number | Width of the line splitter | 1 | false |
 |style| object | Style of the menu container | | false |
 
-#### PopoverAndroid.Option
+#### Popover.Option
 
 Manage the content of a menu option.
 
@@ -114,7 +113,7 @@ Manage the content of a menu option.
 |textStyle| object | Style of the menu title | | false |
 |touchableOpacityProps| object | TouchableOpacity props | | false|
 
-#### PopoverAndroid.Placeholder
+#### Popover.Placeholder
 
 All popover buttons are absolutely positioned over the placeholder. Originally, we may expect
 that the popover button relatively positioned over certain container, for example, to make good
