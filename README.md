@@ -128,9 +128,17 @@ placeholder, however, it could be as if the popover button is part of the flex b
 
 ## How it works
 
-Crucially, any area of an interact-able component such as `TouchableOpacity` will only
-receive the user events provided that this area is contained in its parent component,
-and this area of its parent component is contained in its grandparent's component, and 
-the chain goes on. 
+This module is primarily offered as a workaround for known issue on Android: `TouchableXX` 
+component will be touchable if it is contained in its parent component, and its parent component 
+is contained in its parent's parent component. 
+[Reference to the github issue.](https://github.com/entria/react-native-view-overflow/issues/13)
+
+Therefore, there must be some compromise on the design. If we ensure that the popover menu resides
+inside a menu container completely and the menu container resides inside its parent container, 
+and the chain goes on, then the popover menu is interactable.
+
+To better understand the known issue on Android, here are more examples:
+[Example1](https://github.com/Stanley1234/React-Native-Popover-Menu/blob/master/demo/prototype/Broken1.js). 
+[Example2](https://github.com/Stanley1234/React-Native-Popover-Menu/blob/master/demo/prototype/Broken2.js).
 
 
