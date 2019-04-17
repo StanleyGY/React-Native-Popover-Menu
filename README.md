@@ -8,7 +8,7 @@ dependencies. See more details on the background on *How it works* section.
 
 ![Example Animation](demo/final.gif)
 
-The code snippets:
+The code snippets. [More details](https://github.com/Stanley1234/React-Native-Popover-Menu/blob/master/demo/Demo.js)
 ```
 <Layer>
  <View>
