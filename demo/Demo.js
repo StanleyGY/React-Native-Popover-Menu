@@ -43,10 +43,10 @@ export default class Demo extends Component {
                <PopoverAndroid.Placeholder dimension={{width: 60}}/>
             </View>
          </View>
-         <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 5}}
+         <PopoverAndroid.Commander buttonStylePosition={{left: 30, top: 9}}
                                    renderButton={(props) => this._renderPopoverButton("Open1")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
-         <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 5}}
+         <PopoverAndroid.Commander buttonStylePosition={{right: 20, top: 9}}
                                    renderButton={(props) => this._renderPopoverButton("Open2")(props)}
                                    renderMenuItems={(props) => this._renderPopoverMenuItem(props)}/>
          <PopoverAndroid.Commander buttonStylePosition={{left: 20, top: 532}}
