@@ -1,8 +1,7 @@
 # React Native Popover Menu
 
 ## Introduction
-`React-Native-Popover-Menu` is a very simple component to use without adding any native
-dependencies. See more details on the background on *How it works* section.
+`React-Native-Popover-Menu` is a simple component without any fancy special effects compared to other existing popover menu components. Besides, the source code is simple to read and easily adapted, without any native support. See more details on the background on *How it works* section.
 
 ## Demo
 
